@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320">
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{font-size:23px;fill:#e7f1f3}.sub{font-size:15px;fill:#8da8b7}.icon{fill:none;stroke:#98efd8;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</style>
+  <circle cx="170" cy="130" r="74" fill="#10232d" stroke="#69d6ee66"/>
+  <g class="icon"><ellipse cx="170" cy="130" rx="33" ry="73"/><path d="M98 130h144M108 94h124M108 166h124"/></g>
+  <text x="170" y="243" text-anchor="middle" class="title">通用大模型</text><text x="170" y="275" text-anchor="middle" class="sub">擅长公开知识</text>
+  <path d="M272 130h198" stroke="#69d6ee88" stroke-dasharray="4 7" stroke-width="2"/>
+  <path d="m452 121 18 9-18 9" class="icon"/>
+  <g transform="translate(500 24)">
+    <path d="M0 0h105v220H0Z" fill="#19222a" stroke="#f5ae7e88"/>
+    <path d="M0 44h105M0 88h105M0 132h105M0 176h105M52 0v44m-27 0v44m52 0V44M52 88v44m-27 0v44m52 0v-44M52 176v44" fill="none" stroke="#f5ae7e44"/>
+    <rect x="31" y="80" width="44" height="42" rx="6" fill="#161f26" stroke="#f5ae7e"/>
+    <path d="M41 80V69a12 12 0 0 1 24 0v11" fill="none" stroke="#f5ae7e" stroke-width="2"/>
+    <text x="52" y="257" text-anchor="middle" class="title" style="fill:#f5ae7e">行业壁垒</text>
+  </g>
+  <g transform="translate(720 25)">
+    <path d="m35 37 40 13 3-29 12 4 5 31 40 18-3 10-44-9-18 29-8-3 9-32-37-22Z" class="icon"/>
+    <text x="155" y="61" class="title">航旅支付</text><text x="155" y="90" class="sub">术语、结算链路、异常场景</text>
+    <path d="M44 145h85v58H44Zm0 13h85m-24 18h14" class="icon"/>
+    <text x="155" y="169" class="title">金融业务</text><text x="155" y="198" class="sub">业务规则、合规边界、经验判断</text>
+  </g>
+  <text x="600" y="312" class="sub" text-anchor="middle">决定协作质量的 Know-how，往往不在公开数据里。</text>
+</svg>

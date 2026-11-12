@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 325">
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{font-size:22px;fill:#e2eef1}.sub{font-size:15px;fill:#91a9b5}.line{fill:none;stroke-width:1.5}</style>
+  <text x="20" y="52" class="title">经验没有留下</text><text x="20" y="80" fill="#f5ae7e" font-size="14">每次协作，都在原地起步</text>
+  <path d="M259 103h878" stroke="#f5ae7e44"/>
+  <g fill="#382a22" stroke="#f5ae7e88"><rect x="280" y="68" width="145" height="35" rx="4"/><rect x="590" y="68" width="145" height="35" rx="4"/><rect x="900" y="68" width="145" height="35" rx="4"/></g>
+  <g text-anchor="middle" fill="#f5ae7e" font-size="17"><text x="352" y="92">又教一遍</text><text x="662" y="92">又教一遍</text><text x="972" y="92">又教一遍</text></g>
+  <g class="sub" text-anchor="middle"><text x="352" y="134">第一次会话</text><text x="662" y="134">第二次会话</text><text x="972" y="134">第三次会话</text></g>
+  <path d="M470 84h69m-12-7 12 7-12 7m253-7h69m-12-7 12 7-12 7" class="line" stroke="#f5ae7e66"/>
+  <text x="20" y="216" class="title">如果经验能留下？</text><text x="20" y="244" fill="#98efd8" font-size="14">下一次，从上一次的积累开始</text>
+  <path d="M259 281h878" stroke="#98efd844"/>
+  <g fill="#13372e" stroke="#98efd877"><rect x="280" y="246" width="145" height="35" rx="4"/><rect x="590" y="218" width="145" height="63" rx="4"/><rect x="900" y="181" width="145" height="100" rx="4"/></g>
+  <g text-anchor="middle" fill="#98efd8" font-size="17"><text x="352" y="269">形成经验</text><text x="662" y="254">复用方法</text><text x="972" y="238">持续修正</text></g>
+  <path d="M425 246c65 0 98-28 165-28m145 0c65 0 98-37 165-37" stroke="#98efd8" stroke-dasharray="4 6" fill="none"/>
+  <text x="1135" y="316" text-anchor="end" fill="#647f8e" font-size="11">能力积累的概念示意，非效果测量数据</text>
+</svg>

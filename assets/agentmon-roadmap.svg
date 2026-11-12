@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340">
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{fill:#e6eff1;font-size:23px}.sub{fill:#91a8b7;font-size:14px}.level{font-size:13px;letter-spacing:2px;fill:#98efd8}.icon{fill:none;stroke:#98efd8;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}</style>
+  <path d="M110 245H380V181H664V116H957V49h128" stroke="#426674" stroke-width="2" fill="none" stroke-dasharray="4 7"/>
+  <path d="M110 245h270" stroke="#98efd8" stroke-width="2"/>
+  <g transform="translate(33 117)">
+    <text x="0" y="0" class="level">L1 / 当前阶段</text>
+    <rect x="24" y="28" width="106" height="76" rx="6" fill="#10272b" stroke="#98efd8"/><path d="M77 104v17M48 121h58m-49-69 20-10 20 10v25L77 88 57 77Z" class="icon"/>
+    <text x="77" y="178" class="title" text-anchor="middle">单机进化引擎</text><text x="77" y="208" class="sub" text-anchor="middle">个人 AI 越用越懂你</text>
+  </g>
+  <g transform="translate(328 61)">
+    <text x="0" y="0" class="level">L2 / 规划</text>
+    <g class="icon"><circle cx="58" cy="43" r="12"/><circle cx="95" cy="52" r="10"/><path d="M31 102V89a27 27 0 0 1 54 0v13m8-31a22 22 0 0 1 24 22v9"/></g>
+    <text x="67" y="174" class="title" text-anchor="middle">团队知识中枢</text><text x="67" y="204" class="sub" text-anchor="middle">共享技能 / 团队审批</text>
+  </g>
+  <g transform="translate(601 13)">
+    <text x="0" y="0" class="level">L3 / 规划</text>
+    <g class="icon"><path d="M20 102V24h88v78M10 102h108M39 44h11m27 0h11M39 64h11m27 0h11M54 102V84h22v18"/></g>
+    <text x="64" y="172" class="title" text-anchor="middle">企业持续学习系统</text><text x="64" y="202" class="sub" text-anchor="middle">权限 / 审计 / 私有化</text>
+  </g>
+  <g transform="translate(911 3)">
+    <text x="0" y="0" class="level">L4 / 愿景</text>
+    <g class="icon"><circle cx="66" cy="49" r="23"/><circle cx="13" cy="27" r="7"/><circle cx="118" cy="22" r="7"/><circle cx="119" cy="78" r="7"/><circle cx="17" cy="90" r="7"/><path d="m20 30 25 10m40-4 26-11m-25 35 26 15m-64-9L23 85"/></g>
+    <text x="66" y="147" class="title" text-anchor="middle">行业智能生态</text><text x="66" y="177" class="sub" text-anchor="middle">跨模型 / 授权 / 能力流转</text>
+  </g>
+  <text x="1110" y="321" text-anchor="end" fill="#698695" font-size="12">L2–L4 为演进规划与长期愿景</text>
+</svg>

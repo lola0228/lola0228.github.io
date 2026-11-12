@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="m1 1 7 4-7 4" fill="none" stroke="#98efd8" stroke-width="1.5"/></marker></defs>
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{fill:#e6f0f3;font-size:22px}.sub{fill:#93acb8;font-size:14px}.line{fill:none;stroke:#98efd8;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}</style>
+  <g transform="translate(15 80)">
+    <path d="M0 0h175a12 12 0 0 1 12 12v82a12 12 0 0 1-12 12H65l-22 21v-21H0a12 12 0 0 1-12-12V12A12 12 0 0 1 0 0Z" fill="#10242e" stroke="#69d6ee77"/>
+    <path d="M20 27h140M20 49h110M20 71h80" stroke="#69d6ee" stroke-width="2"/>
+    <text x="85" y="172" text-anchor="middle" class="title">本地会话 / 资料</text><text x="85" y="201" text-anchor="middle" class="sub">真实工作，持续伴随</text>
+  </g>
+  <path d="M212 135H285" class="line" marker-end="url(#a)"/>
+  <g transform="translate(300 33)">
+    <rect width="272" height="62" rx="8" fill="#102932" stroke="#69d6ee77"/><text x="24" y="38" fill="#69d6ee" font-size="22">Memory</text><text x="167" y="38" class="sub">记住经验</text>
+    <rect y="79" width="272" height="62" rx="8" fill="#102d29" stroke="#98efd877"/><text x="24" y="117" fill="#98efd8" font-size="22">Rule</text><text x="167" y="117" class="sub">沉淀规则</text>
+    <rect y="158" width="272" height="62" rx="8" fill="#29251f" stroke="#f5ae7e77"/><text x="24" y="196" fill="#f5ae7e" font-size="22">Skill</text><text x="167" y="196" class="sub">学会流程</text>
+    <path d="M24 239c0 25 218 25 218 0" fill="none" stroke="#98efd86b"/><path d="m231 243 11-6 7 10" class="line"/>
+    <text x="136" y="284" text-anchor="middle" class="sub">可复用 · 提出修订 · 审批生效</text>
+  </g>
+  <path d="M585 135H654" class="line" marker-end="url(#a)"/>
+  <g transform="translate(670 68)">
+    <path d="m72 0 67 24v54c0 40-67 72-67 72S5 118 5 78V24Z" fill="#132d29" stroke="#98efd8" stroke-width="1.5"/>
+    <circle cx="72" cy="45" r="12" class="line"/><path d="M49 85v-7a23 23 0 0 1 46 0v7m-46 12 17 16 31-31" class="line"/>
+    <text x="72" y="188" text-anchor="middle" class="title">人在环审批</text><text x="72" y="218" text-anchor="middle" class="sub">你的确认，才成为能力</text>
+  </g>
+  <path d="M821 135H889" class="line" marker-end="url(#a)"/>
+  <g transform="translate(908 50)">
+    <rect width="340" height="181" rx="11" fill="#11202c" stroke="#7896ac88" stroke-dasharray="5 5"/>
+    <text x="170" y="38" text-anchor="middle" class="title">可调用的学习服务</text>
+    <path d="M56 82h228M56 82v28m114-28v28m114-28v28" fill="none" stroke="#7896ac88"/>
+    <g fill="#172a36" stroke="#7896ac66"><rect x="18" y="110" width="84" height="43" rx="5"/><rect x="128" y="110" width="84" height="43" rx="5"/><rect x="238" y="110" width="84" height="43" rx="5"/></g>
+    <g text-anchor="middle" class="sub"><text x="60" y="137">模型 A</text><text x="170" y="137">模型 B</text><text x="280" y="137">模型 C</text></g>
+    <text x="170" y="226" text-anchor="middle" fill="#f5ae7e" font-size="14">跨模型调用：服务化演进方向</text>
+  </g>
+</svg>

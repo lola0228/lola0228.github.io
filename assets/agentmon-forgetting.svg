@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 330">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="m1 1 7 4-7 4" fill="none" stroke="#7999aa" stroke-width="1.5"/></marker></defs>
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{fill:#e2eef0;font-size:23px}.sub{fill:#91a9b5;font-size:16px}.line{fill:none;stroke:#98efd8;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</style>
+  <path d="M266 125H470M726 125H930" stroke="#5d7b8b" stroke-width="1.5" stroke-dasharray="5 8" marker-end="url(#a)"/>
+  <g transform="translate(80 34)">
+    <path d="M28 0h145a18 18 0 0 1 18 18v75a18 18 0 0 1-18 18H73l-31 23v-23H28A18 18 0 0 1 10 93V18A18 18 0 0 1 28 0Z" fill="#10242c" stroke="#98efd87a"/>
+    <path class="line" d="M45 32h110M45 54h85M45 76h65"/>
+    <text x="100" y="185" text-anchor="middle" class="title">昨天，教会了。</text>
+    <text x="100" y="218" text-anchor="middle" class="sub">术语 · 经验 · 做事的方法</text>
+  </g>
+  <g transform="translate(480 22)">
+    <circle cx="120" cy="100" r="77" fill="#111d28" stroke="#7896aa55"/>
+    <path d="M76 78c-20-19-3-47 20-40 8-20 36-20 44 0 24-7 41 21 21 40 22 17 10 44-12 44-2 23-30 30-42 12-19 8-39-8-34-27-15-8-14-24 3-29Z" class="line"/>
+    <path d="M119 39v87M93 60l26 18 24-20M92 103l27-14 23 14" stroke="#98efd86b" fill="none"/>
+    <circle cx="174" cy="153" r="28" fill="#241f20" stroke="#f5ae7e"/>
+    <path d="M174 135v19l12 8" stroke="#f5ae7e" fill="none" stroke-width="2"/>
+    <text x="120" y="235" text-anchor="middle" class="title">会话结束 / 新的一天</text>
+    <text x="120" y="268" text-anchor="middle" fill="#f5ae7e" font-size="16">计算能力还在，经验没有留下。</text>
+  </g>
+  <g transform="translate(940 34)">
+    <path d="M18 0h145a18 18 0 0 1 18 18v75a18 18 0 0 1-18 18H63l-31 23v-23H18A18 18 0 0 1 0 93V18A18 18 0 0 1 18 0Z" fill="#171c26" stroke="#f5ae7e88" stroke-dasharray="5 5"/>
+    <text x="90" y="79" fill="#f5ae7e" text-anchor="middle" font-size="70" font-weight="300">?</text>
+    <text x="90" y="185" text-anchor="middle" class="title">今天，再教一遍。</text>
+    <text x="90" y="218" text-anchor="middle" class="sub">没有海马体，也没有流程记忆</text>
+  </g>
+  <path d="M1025 290v18H180v-22" fill="none" stroke="#f5ae7e44" stroke-dasharray="3 7"/>
+  <text x="600" y="325" fill="#688795" text-anchor="middle" font-size="12">INTELLIGENCE ≠ GROWTH / 聪明，不等于会成长</text>
+</svg>

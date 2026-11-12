@@ -1,80 +1,770 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A space for projects, pictures, and the stories behind them.">
-    <meta name="theme-color" content="#f6f5f0">
-    <title>Lola — A project journal</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
-    <script src="content.js" defer></script>
-    <script src="script.js" defer></script>
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header container">
-      <a class="brand" href="#" aria-label="Home"><span data-content="site.name">lola</span><span class="brand-dot">.</span></a>
-      <span class="header-caption" data-content="site.label">A PROJECT JOURNAL</span>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" hidden>Menu <span aria-hidden="true">+</span></button>
-      <nav id="main-nav" aria-label="Main navigation">
-        <a href="#work">The work</a>
-        <a href="#about">About</a>
-        <a href="#notes">Notes</a>
-        <a class="nav-contact" href="#contact">Say hello <span aria-hidden="true">↗</span></a>
-      </nav>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070c13">
+  <meta name="description" content="AgentMon: Beyond Evolving。按项目文档叙事展开的产品发布演示。">
+  <title>AgentMon · 超越进化｜产品发布演示</title>
+  <link rel="icon" href="assets/agentmon-mark.svg" type="image/svg+xml">
+  <style>
+    :root{color-scheme:dark;--bg:#070c13;--ink:#eff5f5;--dim:#91a5b1;--cyan:#98efd8;--blue:#69d6ee;--orange:#f5ae7e;--line:#b8d7e31c}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;overflow:hidden}
+    body{background:var(--bg);color:var(--ink);font-family:Inter,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+    button,input{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+    button{cursor:pointer;color:inherit}
+    a{color:inherit;text-decoration:none}
+    button:disabled{opacity:.25;cursor:default}
+    button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--cyan);outline-offset:5px}
+    ::selection{background:var(--cyan);color:var(--bg)}
+    [hidden]{display:none!important}
+    #space{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;opacity:.65}
+    .ambient{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 86% 45%,#255e5c16,transparent 52%),radial-gradient(ellipse at 15% 100%,#1d43651a,transparent 50%)}
+    .app{height:100dvh;display:grid;grid-template-rows:76px minmax(0,1fr) 78px;position:relative}
+    .topbar,.bottom{display:flex;align-items:center;justify-content:space-between;margin:0 4.2vw;gap:24px}
+    .topbar{border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:650;font-size:21px;letter-spacing:-.7px;white-space:nowrap;background:none;border:0;padding:0}
+    .brand img{width:37px;height:37px}
+    .brand em{color:var(--cyan);font-style:normal}
+    .header-meta{color:#607987;letter-spacing:2px;font:10px ui-monospace,SFMono-Regular,Consolas,monospace}
+    .tools{display:flex;align-items:center;gap:9px}
+    .tool{border:1px solid var(--line);border-radius:5px;padding:8px 11px;background:#0d182066;min-height:35px;font-size:11px;color:#a6bbc5;white-space:nowrap}
+    .tool:hover{border-color:#98efd866;color:var(--cyan)}
+    .tool[aria-pressed="true"]{color:var(--cyan);border-color:#98efd84d}
+    .sound-icon{display:inline-flex;align-items:center;gap:2px;height:10px;margin-right:6px;vertical-align:middle}
+    .sound-icon i{height:5px;width:2px;background:currentColor}
+    .sound-icon i:nth-child(2){height:10px}.sound-icon i:nth-child(3){height:7px}
+    [aria-pressed="true"] .sound-icon i{animation:equalize .7s ease-in-out infinite alternate}
+    [aria-pressed="true"] .sound-icon i:nth-child(2){animation-delay:-.3s}
+    .stage{position:relative;min-height:0;isolation:isolate}
+    .slide{position:absolute;inset:0;overflow:auto;overscroll-behavior:contain;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s,transform .28s;transform:translateX(15px);scrollbar-width:thin;scrollbar-color:#34505b transparent}
+    .slide.active{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+    .slide-inner{width:min(1280px,91.6%);min-height:100%;margin:auto;padding:35px 0;display:flex;flex-direction:column;justify-content:center}
+    .slide-heading{margin-bottom:34px}
+    .kicker{display:flex;align-items:center;gap:12px;color:var(--cyan);font:11px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:2.4px;margin:0 0 23px;text-transform:uppercase}
+    .kicker::before{content:"";width:20px;height:1px;background:var(--cyan);flex-shrink:0}
+    .kicker .cn{font-family:"PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:2px;color:#91a5b1}
+    h1,h2,h3,p{margin:0}
+    h1{font-size:clamp(60px,7vw,104px);font-weight:620;letter-spacing:-5px;line-height:1.04}
+    h2{font-size:clamp(33px,4.4vw,65px);font-weight:580;letter-spacing:-2.3px;line-height:1.3}
+    h3{font-size:25px;line-height:1.5;font-weight:520;letter-spacing:-.7px}
+    .accent{color:var(--cyan)}.warm{color:var(--orange)}
+    .muted{color:var(--dim)}
+    .lead{font-size:clamp(15px,1.35vw,19px);color:var(--dim);line-height:1.9;max-width:780px}
+    .lead strong{color:var(--ink);font-weight:500}
+    .big-statement{font-size:clamp(39px,5.4vw,78px);line-height:1.35;letter-spacing:-2.7px;font-weight:560}
+    .split{display:grid;grid-template-columns:1.18fr 1fr;gap:60px;align-items:center}
+    .cover-title{margin:20px 0 28px}
+    .cover-title .sub{display:block;color:var(--cyan);font-size:.77em;letter-spacing:-2px;margin-top:19px}
+    .cover-desc{margin-top:28px;line-height:2;font-size:17px;color:var(--dim)}
+    .tags{display:flex;gap:12px;flex-wrap:wrap;margin-top:33px}
+    .tag{border:1px solid var(--line);border-radius:3px;padding:7px 11px;color:#a7bac5;font-size:11px}
+    .hero-art{position:relative;display:grid;place-items:center;min-width:0}
+    .hero-art::before{content:"";position:absolute;inset:12%;border-radius:50%;background:#71dfcb0a;box-shadow:0 0 110px #71dfcb0c}
+    .hero-art img{position:relative;width:min(100%,500px);filter:drop-shadow(0 0 25px #61d9d913);animation:breathe 8s ease-in-out infinite}
+    .art-label{position:absolute;bottom:0;right:6%;color:#526f7e;font:9px ui-monospace,monospace;letter-spacing:2px;line-height:1.8}
+    .footnote{font-size:11px;line-height:1.8;color:#718b99;margin-top:25px}
+    .insight{margin-top:36px;border-left:2px solid var(--cyan);padding:4px 0 4px 23px;font-size:21px;line-height:1.75;color:#d4e4e9}
+    .big-index{font:clamp(100px,18vw,240px)/1 ui-monospace,monospace;letter-spacing:-18px;color:#98efd80b;position:absolute;right:7%;top:10%;pointer-events:none;z-index:-1}
+    .panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+    .panel{border:1px solid var(--line);border-radius:8px;padding:28px;background:linear-gradient(130deg,#14232d77,#0c131d55);min-width:0}
+    .panel .label{font:10px ui-monospace,monospace;letter-spacing:2px;color:var(--cyan);margin-bottom:25px;display:block}
+    .panel h3{font-size:22px;margin-bottom:16px}
+    .panel p{font-size:15px;line-height:1.9;color:var(--dim)}
+    .panel strong{font-weight:500;color:var(--ink)}
+    .panel .mini{margin-top:23px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:#bdcfd5}
+    .diagram{border:1px solid var(--line);border-radius:10px;padding:35px;background:#0c172088}
+    .diagram-title{font:11px ui-monospace,monospace;letter-spacing:2px;color:#6b8795;margin-bottom:26px}
+    .brain{border:1px solid #98efd85c;padding:22px;border-radius:6px;color:var(--cyan);font-size:26px;text-align:center;background:#98efd808}
+    .brain small{display:block;color:var(--dim);font-size:12px;margin-top:8px}
+    .missing{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .missing>div{border:1px dashed #f5ae7e4f;padding:20px 14px;text-align:center;border-radius:5px;color:var(--orange);font-size:17px}
+    .missing small{display:block;margin-top:8px;font-size:11px;color:var(--dim);line-height:1.7}
+    .chips{display:flex;gap:13px;flex-wrap:wrap;margin:28px 0}
+    .chips span{padding:10px 15px;border:1px solid #69d6ee33;border-radius:4px;color:#b1d5e0;font-size:14px;background:#69d6ee05}
+    .loop{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin-top:35px}
+    .loop span{border-bottom:1px solid var(--line);padding:12px 0;color:#a7bdc8;font-size:15px}
+    .loop b{color:#536e7c;font-weight:400}
+    .flow{display:flex;align-items:center;gap:12px;margin-top:35px}
+    .flow>div{flex:1;padding:20px 15px;border:1px solid var(--line);border-radius:5px;text-align:center;font-size:17px}
+    .flow>span{color:#4b717c;font-size:22px}
+    .flow small{display:block;font:10px ui-monospace,monospace;letter-spacing:1px;color:var(--dim);margin-top:10px}
+    .formula{display:flex;align-items:stretch;gap:17px;margin:35px 0 27px}
+    .formula-part{padding:28px;flex:1;border:1px solid var(--line);border-radius:7px;background:#101b2477}
+    .formula-part.highlight{border-color:#98efd85c;background:#98efd807;flex:1.55}
+    .formula-part b{font-size:30px;font-weight:500}.formula-part span{display:block;color:var(--dim);font-size:13px;line-height:1.9;margin-top:15px}
+    .operator{align-self:center;color:#5a7381;font-size:29px}
+    .result{padding:22px 26px;border:1px solid #98efd833;border-radius:6px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:#98efd806}
+    .result strong{font-size:26px;color:var(--cyan);font-weight:500}.result span{font-size:13px;color:var(--dim)}
+    .two-panels{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .two-panels .panel{padding:34px}.two-panels .panel h3{font-size:27px}
+    .quote{font-size:clamp(32px,4vw,57px);font-weight:500;line-height:1.55;letter-spacing:-2px}
+    .capability-list{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+    .capability-list div{border-top:1px solid var(--line);padding-top:18px;font-size:16px;color:#a8c0cb}
+    .asset-stack{position:relative;padding:15px 0}
+    .asset-stack .asset{border:1px solid var(--line);border-radius:7px;background:#0d1a24;padding:23px 26px;margin:12px 0;display:flex;justify-content:space-between;gap:20px;align-items:center}
+    .asset b{font-size:17px;font-weight:500}.asset span{font:11px ui-monospace,monospace;color:var(--cyan)}
+    .vision-chain{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:35px}
+    .vision-chain div{border-top:1px solid #98efd84a;padding:22px 0}
+    .vision-chain .time{font:10px ui-monospace,monospace;color:var(--cyan);letter-spacing:2px}
+    .vision-chain h3{font-size:21px;margin:15px 0 10px}.vision-chain p{font-size:14px;line-height:1.9;color:var(--dim)}
+    .infra{margin-top:24px;display:flex;align-items:center;gap:20px;padding:21px 24px;border:1px solid #98efd82b;background:#98efd805;border-radius:5px}
+    .infra b{font-size:17px;color:var(--cyan);font-weight:500;white-space:nowrap}.infra span{font-size:13px;color:var(--dim);line-height:1.8}
+    .ecosystem .slide-inner{gap:15px}
+    .eco-heading .kicker{margin-bottom:14px}
+    .eco-heading h2{font-size:clamp(30px,3.35vw,48px);letter-spacing:-1.6px}
+    .eco-heading .lead{max-width:none;font-size:14px;margin-top:12px}
+    .eco-map{border:1px solid #98efd82b;border-radius:9px;background:radial-gradient(ellipse at center,#1d514629,transparent 65%),#0b151e99;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#46666f transparent}
+    .eco-map svg{display:block;width:100%;height:clamp(245px,35vh,330px);font-family:inherit}
+    .eco-map .eco-card{fill:#101e29;stroke:#81baca55;stroke-width:1}
+    .eco-map .eco-card.enterprise{stroke:#f5ae7e55}
+    .eco-map .eco-core{fill:#102b2b;stroke:#98efd8aa;stroke-width:1.3}
+    .eco-map .eco-connection{fill:none;stroke:#98efd86b;stroke-width:1.3}
+    .eco-map .eco-enterprise-line{stroke:#f5ae7e88}
+    .eco-map .eco-stream{stroke-dasharray:5 8;animation:eco-flow 16s linear infinite}
+    .eco-map .eco-icon{fill:none;stroke:var(--cyan);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .eco-map .eco-title{fill:#e2eff1;font-size:21px;font-weight:550}
+    .eco-map .eco-detail{fill:#91afbd;font-size:14px}
+    .eco-map .eco-cyan{fill:var(--cyan)}.eco-map .eco-orange{fill:var(--orange)}
+    .eco-map .eco-arrow-label{font-size:15px;letter-spacing:1px}
+    .eco-position{display:grid;grid-template-columns:1fr auto 1.7fr auto 1.4fr;align-items:center;gap:15px;padding:14px 21px;border:1px solid var(--line);border-radius:5px;background:#0e1a2277;text-align:center}
+    .eco-position b{font-size:14px;font-weight:500;color:#b8cbd3}
+    .eco-position .center b{color:var(--cyan);font-size:16px}
+    .eco-position small{display:block;font-size:10px;line-height:1.8;color:#809ca9;margin-top:4px}
+    .eco-position .connector{color:#4a7883;font-size:20px}
+    .eco-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .eco-bottom p{font-size:13px;color:#bed3db;line-height:1.7}
+    .eco-bottom span{font-size:10px;color:#718b99;white-space:nowrap}
+    .eco-mobile-hint{display:none}
+    .visual-slide .slide-heading{margin-bottom:20px}
+    .visual-slide h2{font-size:clamp(32px,3.8vw,54px)}
+    .visual-slide .lead{max-width:none;font-size:16px}
+    .diagram-image{display:block;width:100%;height:clamp(245px,37vh,345px);object-fit:contain;margin:23px 0 8px}
+    .diagram-takeaway{display:flex;align-items:center;justify-content:space-between;gap:25px;border-top:1px solid var(--line);padding-top:17px;font-size:16px;line-height:1.8;color:#b9d1da}
+    .diagram-takeaway small{font-size:11px;color:#7794a3}
+    .core-message{padding:18px 24px;border-left:3px solid var(--cyan);background:linear-gradient(90deg,#98efd810,transparent);font-size:clamp(19px,1.8vw,26px);font-weight:500;line-height:1.75;color:#d9e8ec}
+    .core-message strong{color:var(--cyan);font-weight:600}
+    .core-service{font-size:14px;line-height:1.8;color:#9eb8c4;margin-top:12px}
+    .core-service .vision-tag{font-size:10px;color:var(--orange);border:1px solid #f5ae7e44;padding:3px 6px;border-radius:3px;margin-right:8px;white-space:nowrap}
+    .core-visual .diagram-image{height:clamp(215px,31vh,285px);margin-top:16px}
+    .real-demo .slide-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:19px}
+    .real-demo h2{font-size:clamp(30px,3.2vw,45px)}
+    .real-demo .kicker{margin-bottom:14px}
+    .screenshot-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .screenshot-tab{padding:9px 13px;border:1px solid var(--line);border-radius:4px;background:transparent;color:var(--dim);font-size:12px}
+    .screenshot-tab[aria-pressed="true"]{color:var(--cyan);border-color:#98efd888;background:#98efd80c}
+    .screenshot-workspace{display:grid;grid-template-columns:1fr 245px;gap:22px;align-items:stretch}
+    .screenshot-frame{display:flex;flex-direction:column;border:1px solid #8bb9c44d;border-radius:8px;overflow:hidden;background:#0d1922;min-width:0}
+    .screenshot-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;font:10px ui-monospace,monospace;color:#8da9b7;border-bottom:1px solid var(--line)}
+    .screenshot-open{display:block;width:100%;height:clamp(245px,39vh,365px);padding:0;border:0;background:#f7f8fb;cursor:zoom-in}
+    .screenshot-open img{display:block;width:100%;height:100%;object-fit:contain}
+    .screenshot-caption{margin-top:14px;font-size:12px;color:#8da8b7;line-height:1.85}
+    .screenshot-guide{display:flex;flex-direction:column;justify-content:center;gap:21px}
+    .screenshot-guide .step-index{font:11px ui-monospace,monospace;color:var(--cyan)}
+    .screenshot-guide h3{font-size:22px;margin-top:10px}
+    .screenshot-guide p{font-size:13px;line-height:1.9;color:var(--dim);margin-top:12px}
+    .screenshot-guide .tool{text-align:center}
+    .screenshot-guide .evidence-note{font-size:10px;border-top:1px solid var(--line);padding-top:15px}
+    .image-viewer-card{width:min(1350px,100%);height:90dvh;display:flex;flex-direction:column;border:1px solid #98efd844;background:#0c1720;border-radius:9px;overflow:hidden}
+    .image-viewer-header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:14px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+    .image-viewer-header h2{font-size:16px;letter-spacing:0;font-weight:500}
+    .image-viewer-tools{display:flex;gap:8px;align-items:center}
+    .image-viewer-stage{flex:1;min-height:0;overflow:auto;display:flex;align-items:safe center;justify-content:safe center;background:#101b25;padding:15px}
+    .image-viewer-stage img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;flex-shrink:0}
+    .image-viewer-stage.zoomed{display:block}
+    .image-viewer-stage.zoomed img{max-width:none;max-height:none;width:var(--image-zoom-width);margin:0 auto}
+    @media(max-width:700px){.visual-slide h2{font-size:32px}.visual-slide .lead{font-size:14px}.diagram-image{height:220px;margin-top:20px}.diagram-takeaway{display:block;font-size:14px}.diagram-takeaway small{display:block;margin-top:9px;font-size:10px}.core-message{padding:17px;font-size:19px}.core-service{font-size:13px}.core-visual .diagram-image{height:200px}.real-demo .slide-heading{display:block}.screenshot-tabs{margin-top:20px;gap:6px}.screenshot-tab{font-size:10px;padding:8px 10px}.screenshot-workspace{grid-template-columns:1fr;gap:18px}.screenshot-open{height:240px}.screenshot-guide{gap:12px}.screenshot-guide h3{font-size:20px;margin-top:6px}.screenshot-guide p{margin-top:7px}.image-viewer-header{padding:13px}.image-viewer-header h2{font-size:13px}.image-viewer-tools .tool{font-size:10px}.image-viewer-stage{padding:8px}}
+    @keyframes eco-flow{to{stroke-dashoffset:-208}}
+    @media(max-width:700px){.eco-heading h2{font-size:30px;letter-spacing:-1px}.eco-heading .lead{font-size:13px}.eco-map svg{min-width:860px;height:280px}.eco-position{grid-template-columns:1fr;gap:12px;padding:18px}.eco-position .connector{font-size:17px;transform:rotate(90deg)}.eco-position b{font-size:13px}.eco-position .center b{font-size:15px}.eco-bottom{display:block}.eco-bottom p{font-size:12px;margin-bottom:8px}.eco-bottom span{font-size:10px}.eco-mobile-hint{display:block;font-size:10px;color:#718b99;margin-top:-6px}}
+    .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+    .milestone{border-top:1px solid #344d59;padding-top:22px}.milestone.current{border-color:var(--cyan)}
+    .level{font:12px ui-monospace,monospace;color:#6d8796;letter-spacing:1px}.current .level{color:var(--cyan)}
+    .level small{font-size:10px;margin-left:10px}
+    .milestone h3{font-size:22px;margin:24px 0 17px}
+    .milestone p{font-size:14px;line-height:1.95;color:var(--dim)}
+    .milestone .tech{color:#6b8e9d;font:10px/1.9 ui-monospace,monospace;margin-top:20px}
+    .reasons{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .reason{display:flex;gap:20px;border:1px solid var(--line);border-radius:6px;padding:25px;background:#101b2355}
+    .reason .number{font:12px ui-monospace,monospace;color:var(--cyan);padding-top:7px}
+    .reason h3{font-size:22px;margin-bottom:10px}.reason p{font-size:14px;line-height:1.9;color:var(--dim)}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:23px;padding:15px 22px;min-height:48px;border:1px solid var(--cyan);border-radius:4px;background:var(--cyan);color:#08251d;font-size:14px;font-weight:600}
+    .button:hover{box-shadow:0 0 28px #98efd81c}
+    .button.secondary{background:transparent;color:var(--ink);border-color:var(--line)}
+    .link-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:30px}
+    .proof-list{list-style:none;padding:0;margin:27px 0}
+    .proof-list li{font-size:16px;line-height:1.8;color:#b1c6d0;margin:17px 0;padding-left:22px;position:relative}
+    .proof-list li::before{content:"↗";position:absolute;left:0;color:var(--cyan)}
+    .proof-art{border:1px solid var(--line);padding:30px;border-radius:10px;background:#0b141e}
+    .proof-art .terminal-bar{display:flex;justify-content:space-between;font:10px ui-monospace,monospace;letter-spacing:1px;color:#7794a4;border-bottom:1px solid var(--line);padding-bottom:18px}
+    .proof-art .proof-number{font:90px/1 ui-monospace,monospace;color:var(--cyan);margin:35px 0 20px;letter-spacing:-6px}
+    .proof-art p{font-size:14px;line-height:1.9;color:var(--dim)}
+    .innovation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}
+    .innovation-grid .panel{padding:27px}
+    .innovation-grid .panel h3{font-size:23px}
+    .innovation-grid .panel p{font-size:14px}
+    .tracks{display:flex;gap:8px;margin-top:23px;flex-wrap:wrap}
+    .tracks span{border:1px solid #98efd82e;padding:7px 10px;border-radius:3px;color:var(--cyan);font:11px ui-monospace,monospace}
+    .numbered-list{display:grid;gap:18px;margin-top:25px}
+    .numbered-item{display:flex;align-items:flex-start;gap:22px;border-bottom:1px solid var(--line);padding-bottom:22px}
+    .numbered-item:last-child{border:0;padding-bottom:0}
+    .numbered-item .number{font:12px ui-monospace,monospace;color:var(--cyan);padding-top:7px}
+    .numbered-item h3{font-size:23px;margin-bottom:8px}
+    .numbered-item p{font-size:14px;line-height:1.9;color:var(--dim)}
+    .closing-logo{width:230px;max-width:100%;display:block;margin:auto}
+    .closing .split{grid-template-columns:1.5fr .7fr;gap:35px}
+    .closing .lead{margin-top:26px}
+    .closing-formula{margin-top:30px;font-size:19px;color:#c0d7df;line-height:1.8}
+    .bottom{border-top:1px solid var(--line);position:relative}
+    .chapter-nav{display:flex;align-items:center;gap:21px}
+    .chapter{border:0;background:transparent;padding:10px 0;color:#5b7483;font-size:11px;display:flex;align-items:center;gap:7px}
+    .chapter span{font:9px ui-monospace,monospace}
+    .chapter[aria-current="true"]{color:var(--cyan)}
+    .chapter:hover{color:var(--ink)}
+    .page-tools{display:flex;align-items:center;gap:12px;white-space:nowrap}
+    .hint{font:10px ui-monospace,monospace;color:#506c7a;margin-right:10px}
+    .arrow{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:5px;background:#111b2255;font-size:17px}
+    .page-counter{font:12px ui-monospace,monospace;color:#7895a5;min-width:63px;text-align:center;letter-spacing:1px}
+    .page-counter b{color:var(--ink);font-weight:400}
+    .progress{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--orange));width:0;transition:width .3s;z-index:15}
+    .overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;align-items:safe center;overflow-y:auto;padding:30px;background:#050a11ee;backdrop-filter:blur(20px)}
+    .entry-card{width:min(510px,100%);text-align:center;border:1px solid #98efd82c;border-radius:12px;padding:30px 35px;background:radial-gradient(ellipse at top,#24484333,transparent 65%),#0a121b}
+    .entry-logo{width:145px;height:145px;margin-bottom:8px}
+    .entry-card h2{font-size:31px;letter-spacing:-1px;margin:12px 0}
+    .entry-card .intro{color:var(--dim);font-size:12px;line-height:1.95}
+    .entry-audio{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:17px 0;margin:24px 0 18px;font-size:12px;color:#cae2e8;line-height:1.8}
+    .entry-audio small{display:block;color:var(--dim);font-size:10px;margin-top:4px}
+    .entry-card .button{width:100%;margin-top:10px}
+    .entry-card .footnote{font-size:10px;margin-top:18px}
+    .overview-card{width:min(1060px,100%);max-height:90dvh;overflow:auto;border:1px solid #98efd833;border-radius:10px;padding:30px;background:#0b141e}
+    .overview-header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:23px}
+    .overview-header h2{font-size:24px;letter-spacing:-.5px}
+    .overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .overview-item{text-align:left;padding:17px;border:1px solid var(--line);border-radius:5px;background:#101e2855;min-height:92px}
+    .overview-item[aria-current="true"]{border-color:var(--cyan);background:#98efd80c}
+    .overview-item small{font:10px ui-monospace,monospace;color:var(--cyan)}
+    .overview-item strong{display:block;font-size:13px;line-height:1.7;font-weight:500;margin-top:11px}
+    .toast{position:fixed;bottom:97px;left:50%;transform:translateX(-50%);z-index:80;max-width:calc(100% - 35px);width:max-content;padding:14px 20px;background:#142530;border:1px solid #98efd855;border-radius:5px;box-shadow:0 10px 35px #0006;font-size:12px;line-height:1.8}
+    .audio-picker{display:none}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @keyframes equalize{to{height:3px}}
+    @keyframes breathe{50%{transform:translateY(-7px)}}
+    @media(min-width:1600px){.slide-inner{width:min(1400px,88%)}.lead{font-size:21px}.panel p,.milestone p,.reason p{font-size:17px}}
+    @media(max-height:820px) and (min-width:901px){.app{grid-template-rows:62px minmax(0,1fr) 64px}.slide-inner{padding:25px 0}.slide-heading{margin-bottom:24px}h1{font-size:80px}h2{font-size:45px}.kicker{margin-bottom:16px}.hero-art img{max-width:360px}.panel{padding:22px}.panel .label{margin-bottom:16px}.panel p{font-size:14px}.formula{margin:24px 0}.formula-part{padding:22px}.big-statement{font-size:57px}.milestone h3{font-size:19px;margin:17px 0 12px}.milestone p{font-size:12px}.lead{font-size:16px}.cover-desc{font-size:15px}.two-panels .panel{padding:25px}.vision-chain{margin-top:22px}.entry-card{padding:20px 30px}.entry-logo{width:100px;height:100px}.entry-card h2{font-size:28px}.entry-audio{margin:15px 0 10px;padding:12px 0}.entry-card .footnote{margin-top:12px}}
+    @media(max-width:1000px){.header-meta,.hint{display:none}.split{gap:30px}.chapter-nav{gap:13px}.chapter{font-size:10px}.panels,.innovation-grid{gap:12px}.panel{padding:23px}.roadmap{gap:15px}.milestone h3{font-size:19px}.milestone p{font-size:13px}.topbar,.bottom{margin:0 4vw}.slide-inner{width:92%}.formula-part b{font-size:24px}.formula-part{padding:23px}}
+    @media(max-width:700px){.app{grid-template-rows:62px minmax(0,1fr) 68px}.topbar,.bottom{margin:0 20px;gap:12px}.brand{font-size:18px;gap:5px}.brand img{width:30px;height:30px}.tools{gap:5px}.tool{padding:7px 8px;font-size:10px}.replace-label{display:none}.slide-inner{width:calc(100% - 42px);padding:30px 0}.split,.closing .split{grid-template-columns:1fr;gap:26px}.cover .split{grid-template-columns:1fr}.cover .hero-art{max-width:220px;margin:0 auto;width:100%}.cover .slide-inner{padding-top:35px}h1{font-size:59px;letter-spacing:-3px}.cover-title .sub{font-size:.7em}.cover-desc{font-size:14px;margin-top:21px}.tags{margin-top:22px;gap:8px}.tag{font-size:10px;padding:6px 9px}.art-label{display:none}h2{font-size:34px;letter-spacing:-1.3px}.big-statement{font-size:40px;letter-spacing:-1.7px}.kicker{font-size:9px;letter-spacing:1.4px;margin-bottom:18px}.kicker .cn{letter-spacing:1px}.lead{font-size:14px}.slide-heading{margin-bottom:26px}.panel{padding:23px}.panels,.innovation-grid,.two-panels{grid-template-columns:1fr}.panel .label{margin-bottom:18px}.panel h3{font-size:22px}.panel p{font-size:14px}.panel .mini{margin-top:17px}.diagram{padding:23px}.brain{font-size:23px}.missing>div{font-size:16px}.insight{font-size:17px;padding-left:17px;margin-top:24px}.flow{gap:8px;margin-top:25px}.flow>div{font-size:12px;padding:17px 6px}.flow small{font-size:8px}.flow>span{font-size:16px}.formula{gap:8px;flex-wrap:wrap}.formula-part{flex-basis:100%;padding:20px}.formula-part.highlight{flex-basis:100%}.operator{width:100%;text-align:center;font-size:22px}.result{padding:19px;display:block}.result strong{font-size:23px}.result span{display:block;margin-top:12px;line-height:1.8}.quote{font-size:33px;letter-spacing:-1px}.vision-chain{grid-template-columns:1fr;gap:4px}.vision-chain div{padding:19px 0}.vision-chain h3{margin:10px 0}.infra{display:block;padding:20px}.infra b{font-size:15px;white-space:normal}.infra span{display:block;margin-top:12px}.roadmap{grid-template-columns:1fr 1fr;gap:26px 20px}.milestone h3{font-size:18px}.milestone .tech{font-size:9px}.reasons{grid-template-columns:1fr;gap:12px}.reason{padding:21px;gap:15px}.reason h3{font-size:21px}.reason p{font-size:13px}.chapter-nav{display:none}.bottom{justify-content:space-between}.bottom::before{content:attr(data-chapter);font-size:11px;color:#87a2b1}.page-tools{gap:9px}.arrow{width:30px;height:30px}.page-counter{font-size:11px;min-width:57px}.proof-art{padding:25px}.proof-art .proof-number{font-size:70px;margin:25px 0 18px}.closing-logo{width:180px}.closing-formula{font-size:15px}.closing .link-row{gap:12px}.closing .button{font-size:12px;padding:13px 15px}.overview-grid{grid-template-columns:1fr 1fr}.overview-card{padding:22px}.overview-item{padding:13px}.entry-card{padding:25px}.entry-logo{width:120px;height:120px}.entry-card h2{font-size:28px}.overlay{padding:20px}.entry-card .button{font-size:13px}.numbered-item{gap:16px}.numbered-item h3{font-size:21px}.numbered-item p{font-size:13px}.big-index{font-size:150px;right:10%;top:8%;letter-spacing:-10px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media print{html,body{height:auto;overflow:visible;background:#070c13;-webkit-print-color-adjust:exact;print-color-adjust:exact}.app{display:block;height:auto}.topbar,.bottom,.overlay,.progress,.toast,#space,.ambient{display:none!important}.stage{position:static}.slide{position:relative;visibility:visible!important;opacity:1!important;transform:none;display:block;break-after:page;height:190mm;overflow:visible}.slide-inner{width:90%;height:100%;padding:15mm 0}.slide:last-child{break-after:auto}}
+  </style>
+</head>
+<body>
+  <canvas id="space" aria-hidden="true"></canvas>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="app" id="app">
+    <header class="topbar">
+      <button class="brand" id="home" type="button" aria-label="返回发布封面"><img src="assets/agentmon-mark.svg" alt="">AgentMon<em>.</em></button>
+      <span class="header-meta">BEYOND EVOLVING / PRODUCT PRESENTATION</span>
+      <div class="tools">
+        <button class="tool" id="music" type="button" aria-pressed="false" aria-label="播放背景音乐"><span class="sound-icon" aria-hidden="true"><i></i><i></i><i></i></span><span id="music-label">音乐关闭</span></button>
+        <button class="tool replace-label" id="replace-audio" type="button">换音源</button>
+        <button class="tool" id="overview-toggle" type="button" aria-haspopup="dialog" aria-controls="overview">目录</button>
+        <button class="tool" id="fullscreen" type="button" aria-label="进入全屏">全屏 ⛶</button>
+      </div>
     </header>
-
-    <main id="main">
-      <section class="hero container" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="small-dot" aria-hidden="true"></span><span data-content="hero.eyebrow">A SPACE TO CREATE & SHARE</span></p>
-          <h1 id="hero-title"><span data-content="hero.title">A little space</span><br><em data-content="hero.accent">for big ideas.</em></h1>
-          <p class="hero-description" data-content="hero.description">A home for the things I’m making, the details I notice, and the stories I want to tell. Take a look around.</p>
-          <a class="button button-dark" href="#work">Explore the work <span aria-hidden="true">↘</span></a>
-          <p class="hero-footnote" data-content="hero.footnote">A work in progress. Always growing.</p>
-        </div>
-        <figure class="hero-visual">
-          <div class="hero-image-wrap"><img id="hero-image" src="assets/images/study-01.svg" alt="An original abstract illustration of an arch and warm sunlight" width="800" height="1000" fetchpriority="high"></div>
-          <span class="image-label" data-content="hero.imageLabel">IDEAS TAKING SHAPE</span>
-          <div class="floating-note"><span class="note-star" aria-hidden="true">✳</span><span data-content="hero.note">Made with curiosity.<br>Shared with you.</span></div>
-          <figcaption><span data-content="hero.caption">01 / A new perspective</span><span aria-hidden="true">↗</span></figcaption>
-        </figure>
+    <main class="stage" id="stage" tabindex="-1" aria-label="产品发布幻灯片" aria-roledescription="幻灯片演示">
+      <section class="slide active cover" data-chapter="产品发布" data-title="AgentMon · 超越进化" aria-labelledby="s1">
+        <div class="slide-inner"><div class="split">
+          <div><p class="kicker">AI INNOVATION / 产品发布</p><h1 class="cover-title" id="s1">AgentMon<span class="sub">Beyond Evolving.</span></h1><h3>超越进化</h3><p class="cover-desc">让智能体从真实工作中持续成长。<br>不是再做一个聊天机器人，而是构建一个进化引擎。</p><div class="tags"><span class="tag">本地伴随</span><span class="tag">持续学习</span><span class="tag">人在环</span></div></div>
+          <div class="hero-art"><img src="assets/agentmon-mark.svg" alt="AgentMon 数码进化终端 LOGO：双耳 A 形、同心圆与青橙电路线"><span class="art-label">HUMAN EXPERIENCE<br>↓ AGENT EVOLUTION</span></div>
+        </div></div>
       </section>
-
-      <div class="intro-strip"><div class="container"><p data-content="intro">A collection of ideas, experiments, and little discoveries.</p><span aria-hidden="true">CREATED WITH INTENTION ✳</span></div></div>
-
-      <section class="work-section container section-space" id="work" aria-labelledby="work-title">
-        <div class="section-heading">
-          <div><p class="eyebrow">01 / THE COLLECTION</p><h2 id="work-title" data-content="work.title">Selected moments<span>.</span></h2></div>
-          <p class="section-description" data-content="work.description">A few things worth a closer look. Each picture has a story behind it.</p>
-        </div>
-        <div class="collection-bar"><div class="filters" id="gallery-filters" role="group" aria-label="Filter pictures"></div><span class="collection-count" id="gallery-count" role="status" aria-live="polite"></span></div>
-        <div class="gallery" id="gallery"></div>
-        <noscript><p>Enable JavaScript to display the editable picture gallery. You can still read the introduction and about sections.</p></noscript>
+      <section class="slide visual-slide" data-chapter="开发背景" data-title="大模型是「失忆的天才」" aria-labelledby="s2">
+        <div class="big-index" aria-hidden="true">01</div>
+        <div class="slide-inner"><div class="slide-heading"><p class="kicker">01 / BACKGROUND <span class="cn">一、开发背景 · 1</span></p><h2 id="s2">大模型是<span class="accent">「失忆的天才」。</span></h2></div><p class="lead">它拥有强大的大脑，却缺少持续积累经验的海马体，以及把经验沉淀为流程的基底核。</p><img class="diagram-image" src="assets/agentmon-forgetting.svg" alt="昨天的会话教会了方法，会话结束后经验没有保留，今天又要重新教一遍"><div class="diagram-takeaway"><span>昨天的对话，今天一片空白。<span class="warm">每天醒来，一切归零。</span></span><small>缺的不是智力，而是成长机制。</small></div></div>
       </section>
-
-      <section class="about-section" id="about" aria-labelledby="about-title">
-        <div class="container about-grid">
-          <div class="about-art" aria-hidden="true"><div class="paper-card"><span class="paper-index">A NOTE TO BEGIN</span><span class="paper-star">✳</span><p>Small ideas.<br>New perspectives.<br><em>Endless possibilities.</em></p><span class="paper-signature" data-content="site.name">lola</span></div><span class="art-caption">A LITTLE CURIOSITY GOES A LONG WAY.</span></div>
-          <div class="about-copy"><p class="eyebrow">02 / BEHIND THE PROJECT</p><h2 id="about-title"><span data-content="about.title">Every project starts</span><br><em data-content="about.accent">with a little curiosity.</em></h2><div class="body-copy" id="about-paragraphs"><p>This is a space to document a project as it grows: the early ideas, the experiments, and everything in between.</p><p>Over time, these pages will fill with pictures, stories, and things learned along the way.</p></div><a class="text-link" href="#notes">Notes along the way <span aria-hidden="true">↗</span></a></div>
+      <section class="slide visual-slide" data-chapter="开发背景" data-title="行业壁垒，把通用 AI 挡在门外" aria-labelledby="s3">
+        <div class="big-index" aria-hidden="true">02</div>
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">01 / BACKGROUND <span class="cn">一、开发背景 · 2</span></p><h2 id="s3">行业壁垒，把通用 AI <span class="accent">挡在门外。</span></h2></div>
+          <p class="lead">易宝的 2B 行业支付，深入航旅、金融。术语、业务链路与场景经验，构成真正的行业门槛。</p>
+          <img class="diagram-image" src="assets/agentmon-industry.svg" alt="通用大模型基于公开知识，航旅与金融的业务术语、链路、合规经验被行业壁垒隔开">
+          <div class="diagram-takeaway"><span>听不懂术语，接不住链路，就难以真正赋能业务。</span><small>公开知识 ≠ 行业 Know-how</small></div>
         </div>
       </section>
-
-      <section class="notes-section container section-space" id="notes" aria-labelledby="notes-title">
-        <div class="section-heading"><div><p class="eyebrow">03 / THE NOTEBOOK</p><h2 id="notes-title" data-content="notes.title">Notes along the way.</h2></div><p class="section-description" data-content="notes.description">Thoughts, small updates, and what’s coming next.</p></div>
-        <div class="notes-grid" id="notes-grid"></div>
+      <section class="slide visual-slide" data-chapter="开发背景" data-title="经验散落在会话里，工作重复在时间里" aria-labelledby="s4">
+        <div class="big-index" aria-hidden="true">03</div>
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">01 / BACKGROUND <span class="cn">一、开发背景 · 3</span></p><h2 id="s4">经验散落在会话里，工作<span class="accent">重复在时间里。</span></h2></div>
+          <img class="diagram-image" src="assets/agentmon-repeat.svg" alt="对比图：没有经验积累时每次会话都从零开始；若经验留下，则从形成经验、复用方法走向持续修正">
+          <div class="diagram-takeaway"><span>踩过的坑、做对的方法，<span class="accent">不该随一次会话结束而消失。</span></span><small>让完成一次工作，也成为一次积累。</small></div>
+        </div>
       </section>
-
-      <section class="contact-section container" id="contact" aria-labelledby="contact-title"><div class="contact-panel"><div><p class="eyebrow">04 / KEEP IN TOUCH</p><h2 id="contact-title"><span data-content="contact.title">Good things start</span><br><em data-content="contact.accent">with a conversation.</em></h2><p data-content="contact.description">Have a question or an idea? There’s always room for a new connection.</p></div><div class="contact-action"><a id="contact-email" class="button button-dark" hidden>Say hello <span aria-hidden="true">↗</span></a><p id="contact-placeholder">Contact details coming soon.</p><span class="contact-star" aria-hidden="true">✳</span></div></div></section>
+      <section class="slide" data-chapter="开发背景" data-title="我们需要的，是让智能体成长的进化引擎" aria-labelledby="s5">
+        <div class="slide-inner"><div class="split">
+          <div><p class="kicker">THE ANSWER / AGENTMON</p><h2 class="big-statement" id="s5">缺的不是<br>更强的大脑。<br>是<span class="accent">进化的引擎。</span></h2><p class="lead" style="margin-top:25px">AgentMon 的 <strong>-mon</strong>，取自数码宝贝的命名。<br>通过持续互动，吸收会话与行业资料，掌握知识与技能。</p><div class="flow"><div>吸收数据<small>EXPERIENCE</small></div><span>→</span><div>持续进化<small>EVOLUTION</small></div><span>→</span><div class="accent">越来越强<small>CAPABILITY</small></div></div></div>
+          <div class="hero-art"><img src="assets/agentmon-mark.svg" alt="AgentMon 进化终端"><span class="art-label">INSPIRED BY DIGITAL EVOLUTION<br>BUILT FOR REAL WORK</span></div>
+        </div></div>
+      </section>
+      <section class="slide visual-slide core-visual" data-chapter="希望达到的价值" data-title="持续学习、三轨自修正与服务化方向" aria-labelledby="s6">
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">02 / VALUE <span class="cn">二、希望达到的价值 · 核心主张</span></p><h2 id="s6">把你的经验，变成<span class="accent">持续进化的能力。</span></h2></div>
+          <p class="core-message">持续学习你的本地会话，沉淀<strong>可复用、可自修正的 Memory、Rule、Skill</strong>——把经验变成持续进化的根基。</p>
+          <p class="core-service">通过<span class="accent">人在环审批</span>，让这些能力安全沉淀，并走向可供不同大模型调用的学习服务。</p>
+          <img class="diagram-image" src="assets/agentmon-learning.svg" alt="本地会话与资料持续学习，沉淀可复用和可修订的 Memory、Rule、Skill；经人在环审批后生效；服务化方向是让不同大模型调用这些能力">
+          <div class="diagram-takeaway"><span>大模型 + 记忆 + 流程 = <span class="accent">进化的完全体</span></span><small>自修正候选需审批生效；跨模型服务为演进方向。</small></div>
+        </div>
+      </section>
+      <section class="slide" data-chapter="希望达到的价值" data-title="对业务 · 更默契" aria-labelledby="s7">
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">02 / VALUE <span class="cn">二、希望达到的价值 · 1</span></p><h2 id="s7">对业务，<span class="accent">更默契。</span></h2></div>
+          <div class="two-panels"><article class="panel"><span class="label">RULE / MEMORY</span><h3>随叫随到的「行业大拿」</h3><p>从本地会话与行业资料中，持续学习流程、规则与知识。<br><br><strong>接得住术语，输得出成体系的方案。</strong><br>让复杂、细分行业中的 AI 协作真正发生。</p><div class="mini">把行业语境，变成协作共识。</div></article><article class="panel"><span class="label">SKILL</span><h3>懂你方法的「流程管家」</h3><p>把重复运营工作提炼为可复用流程。<br><br><strong>你做一次，它记一次；你改一步，它跟一步。</strong><br>下次不必重教，沿用你认可的最佳实践。</p><div class="mini">把做对一次，变成持续做对。</div></article></div>
+        </div>
+      </section>
+      <section class="slide visual-slide" data-chapter="希望达到的价值" data-title="对个人 · 更强大" aria-labelledby="s8">
+        <div class="slide-inner"><div class="slide-heading"><p class="kicker">02 / VALUE <span class="cn">二、希望达到的价值 · 2</span></p><h2 id="s8">以你为蓝本，<span class="accent">不止于你的上限。</span></h2></div><img class="diagram-image" src="assets/agentmon-growth.svg" alt="人的真实经验沉淀为记忆、技能和规则，再成为可检索、可复用、可并行调用的能力延伸"><div class="diagram-takeaway"><span>越来越像你，因为积累的是你的经验；<span class="accent">更强大，因为能力可以被持续调用。</span></span><small>不是蒸馏你，而是基于你的超越。</small></div></div>
+      </section>
+      <section class="slide visual-slide" data-chapter="希望达到的价值" data-title="对公司 · 资产化" aria-labelledby="s9">
+        <div class="slide-inner"><div class="slide-heading"><p class="kicker">02 / VALUE <span class="cn">二、希望达到的价值 · 3</span></p><h2 id="s9">把个人经验，沉淀为<span class="accent">组织的集体智慧。</span></h2></div><img class="diagram-image" src="assets/agentmon-assets.svg" alt="个人经验、优秀方法与行业知识，经治理沉淀为能力资产，逐步构成可复用、可检索、可继承的企业集体智慧"><div class="diagram-takeaway"><span>让隐性的 Know-how，变成<span class="accent">可传承的生产力资产。</span></span><small>本地留存 · 人在环审批；组织汇总按路线逐步演进。</small></div></div>
+      </section>
+      <section class="slide" data-chapter="希望达到的价值" data-title="对未来 · 智能体养成与交易生态" aria-labelledby="s10">
+        <div class="slide-inner">
+          <p class="kicker">02 / VALUE <span class="cn">二、希望达到的价值 · 4 · 长期愿景</span></p><h2 id="s10">从个人的进化引擎，<br>到<span class="accent">智能体养成与交易生态。</span></h2>
+          <div class="vision-chain"><div><span class="time">TODAY / 今天</span><h3>个人进化引擎</h3><p>可携带、可解释、由本人控制。<br>真实工作的积累，成为自己的能力。</p></div><div><span class="time">TOMORROW / 明天</span><h3>组织持续学习系统</h3><p>优秀成员的方法被团队复用，经验成为可审计、可继承的生产力资产。</p></div><div><span class="time">BEYOND / 未来</span><h3>能力流转与交易</h3><p>养成并分发自己的 AgentMon，探索行业能力包授权，持续适配更先进的模型。</p></div></div>
+          <div class="infra"><b>Agent Learning Infrastructure</b><span>不是另一个聊天机器人，也不是传统知识库。<br>位于大模型、AI 应用与企业工作系统之间，让记忆、技能和领域知识可治理、可评测、可复用。</span></div>
+        </div>
+      </section>
+      <section class="slide ecosystem" data-chapter="希望达到的价值" data-title="投资人重点 · 经验与能力流动的新生态" aria-labelledby="s-ecosystem">
+        <div class="slide-inner">
+          <div class="eco-heading"><p class="kicker">02 / THE BIG PICTURE <span class="cn">投资人重点 · 生态愿景</span></p><h2 id="s-ecosystem">让经验成为资产，让能力<span class="accent">跨越边界。</span></h2><p class="lead">想象一下：每个人养成自己的 AgentMon，人与人、企业与企业之间，开始流转的不只是信息，而是<strong>可复用的能力。</strong></p></div>
+          <div class="eco-map" data-no-swipe>
+            <svg viewBox="0 0 1260 360" role="img" aria-labelledby="eco-diagram-title eco-diagram-desc">
+              <title id="eco-diagram-title">AgentMon 创造的个人与企业能力生态</title>
+              <desc id="eco-diagram-desc">个人甲和个人乙拥有由本人控制的 AgentMon，可在授权下复用方法、交易能力。企业甲与企业乙可授权行业能力包。中央 AgentMon 智能体学习基础设施，将真实工作提炼为记忆、技能和领域知识，在可治理、可评测的前提下支持能力复用与流转，并随更先进的模型持续演化。这是长期愿景。</desc>
+              <defs>
+                <marker id="eco-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="m1 1 7 4-7 4" fill="none" stroke="#98efd8" stroke-width="1.5"/></marker>
+                <marker id="eco-arrow-warm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="m1 1 7 4-7 4" fill="none" stroke="#f5ae7e" stroke-width="1.5"/></marker>
+                <symbol id="eco-person" viewBox="0 0 40 40"><circle cx="20" cy="12" r="6"/><path d="M7 35v-4a13 13 0 0 1 26 0v4M13 35v-8m14 8v-8"/></symbol>
+                <symbol id="eco-building" viewBox="0 0 40 40"><path d="M7 35V9h26v26M3 35h34M14 15h3m6 0h3m-12 6h3m6 0h3M17 35v-7h6v7"/></symbol>
+              </defs>
+              <path class="eco-connection eco-stream" d="M307 88H950" marker-start="url(#eco-arrow)" marker-end="url(#eco-arrow)"/>
+              <rect x="431" y="58" width="398" height="27" rx="13" fill="#0b151e"/>
+              <text x="630" y="77" class="eco-cyan eco-arrow-label" text-anchor="middle">人与人：方法复用 / AgentMon 授权与交易</text>
+              <path class="eco-connection eco-stream" d="M285 126C365 126 371 168 450 168M810 168C889 168 895 126 975 126" marker-end="url(#eco-arrow)"/>
+              <path class="eco-connection eco-enterprise-line eco-stream" d="M285 245C365 245 371 211 450 211M810 211C889 211 895 245 975 245" marker-end="url(#eco-arrow-warm)"/>
+              <path class="eco-connection" d="M630 90V124" marker-end="url(#eco-arrow)"/>
+              <path class="eco-connection eco-enterprise-line" d="M630 238V267" marker-end="url(#eco-arrow-warm)"/>
+              <path class="eco-connection eco-enterprise-line eco-stream" d="M307 278H950" marker-start="url(#eco-arrow-warm)" marker-end="url(#eco-arrow-warm)"/>
+              <rect x="444" y="287" width="372" height="28" rx="14" fill="#0b151e"/>
+              <text x="630" y="307" class="eco-orange eco-arrow-label" text-anchor="middle">企业与企业：行业能力包授权 / 经验复用</text>
+              <g transform="translate(25 35)"><rect class="eco-card" width="260" height="115" rx="9"/><use href="#eco-person" class="eco-icon" x="18" y="20" width="42" height="42"/><text x="76" y="39" class="eco-title">个人甲 · 行业专家</text><text x="76" y="65" class="eco-detail">真实工作 → 个人 AgentMon</text><text x="24" y="96" class="eco-detail eco-cyan">本人控制 · 可携带 · 可解释</text></g>
+              <g transform="translate(975 35)"><rect class="eco-card" width="260" height="115" rx="9"/><use href="#eco-person" class="eco-icon" x="18" y="20" width="42" height="42"/><text x="76" y="39" class="eco-title">个人乙 · 协作者</text><text x="76" y="65" class="eco-detail">授权方法 → 复用实践</text><text x="24" y="96" class="eco-detail eco-cyan">人与智能体，都能复用优秀实践</text></g>
+              <g transform="translate(25 213)"><rect class="eco-card enterprise" width="260" height="115" rx="9"/><use href="#eco-building" class="eco-icon" style="stroke:var(--orange)" x="18" y="20" width="42" height="42"/><text x="76" y="39" class="eco-title">企业甲 · 能力供给</text><text x="76" y="65" class="eco-detail">行业经验 → 行业能力包</text><text x="24" y="96" class="eco-detail eco-orange">经验、流程，沉淀为生产力资产</text></g>
+              <g transform="translate(975 213)"><rect class="eco-card enterprise" width="260" height="115" rx="9"/><use href="#eco-building" class="eco-icon" style="stroke:var(--orange)" x="18" y="20" width="42" height="42"/><text x="76" y="39" class="eco-title">企业乙 · 场景应用</text><text x="76" y="65" class="eco-detail">授权能力包 → 业务工作流</text><text x="24" y="96" class="eco-detail eco-orange">可度量 · 可审计 · 可继承</text></g>
+              <g><rect x="450" y="124" width="360" height="114" rx="12" class="eco-core"/><image href="assets/agentmon-mark.svg" x="462" y="134" width="70" height="70"/><text x="538" y="159" class="eco-cyan" font-size="29" font-weight="600">AgentMon</text><text x="538" y="183" fill="#d0e7e8" font-size="16">智能体学习基础设施</text><text x="630" y="216" class="eco-detail" text-anchor="middle">工作经验 → 记忆 / 技能 / 知识 → 能力资产</text></g>
+              <text x="630" y="348" class="eco-detail" text-anchor="middle">携带自己的成长记录，在更先进的模型中持续演化</text>
+            </svg>
+          </div>
+          <p class="eco-mobile-hint">← 左右滑动查看完整生态简图 →</p>
+          <div class="eco-position"><div><b>大模型</b><small>提供计算与推理能力</small></div><span class="connector" aria-hidden="true">↔</span><div class="center"><b>Agent Learning Infrastructure</b><small>持续学习 · 能力沉淀 · 可治理、可评测地复用与流转</small></div><span class="connector" aria-hidden="true">↔</span><div><b>AI 应用 / 企业工作系统</b><small>让能力进入真实工作</small></div></div>
+          <div class="eco-bottom"><p>不是另一个聊天机器人，也不是传统知识库。<strong class="accent">我们让经验，成为可以持续成长与流转的能力。</strong></p><span>长期愿景 · 非当前已交付能力</span></div>
+        </div>
+      </section>
+      <section class="slide visual-slide" data-chapter="希望达到的价值" data-title="达到终局的技术演进路径" aria-labelledby="s11">
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">02 / ROADMAP <span class="cn">二、希望达到的价值 · 技术演进路径</span></p><h2 id="s11">进化，有一条<span class="accent">清晰的路径。</span></h2></div>
+          <img class="diagram-image" src="assets/agentmon-roadmap.svg" alt="阶梯演进图：L1 当前单机进化引擎，L2 团队知识中枢，L3 企业学习系统，L4 行业智能生态">
+          <div class="diagram-takeaway"><span>先验证个人价值，再放大为组织与行业价值。</span><small>L2–L4 为演进规划与长期愿景，不代表已交付能力。</small></div>
+        </div>
+      </section>
+      <section class="slide" data-chapter="希望达到的价值" data-title="这个方向值得押注的四个理由" aria-labelledby="s12">
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">02 / WHY NOW <span class="cn">二、希望达到的价值 · 为什么值得押注</span></p><h2 id="s12">真实工作的积累，<br>是下一轮 AI 的<span class="accent">价值入口。</span></h2></div>
+          <div class="reasons"><article class="reason"><span class="number">01</span><div><h3>超越 · 真实经验的壁垒</h3><p>真实工作流与行业 Know-how，无法仅靠公开数据获得。</p></div></article><article class="reason"><span class="number">02</span><div><h3>网络效应 · 越用越丰富</h3><p>面向未来，技能与知识随参与者增长，行业包可探索跨企业授权。</p></div></article><article class="reason"><span class="number">03</span><div><h3>极高黏性 · 成长即资产</h3><p>智能体的成长记录，就是用户自己的经验资产与持续积累。</p></div></article><article class="reason"><span class="number">04</span><div><h3>时机正确 · 我们正站在入口上</h3><p>AI 时代的超级贡献者，将会是「最会使用 AI 的人」，这将由 AgentMon 和它创造的生态来塑造。<br><span class="accent">——这个市场空白刚刚打开，我们正站在入口上。</span></p></div></article></div>
+        </div>
+      </section>
+      <section class="slide real-demo" data-chapter="可验证成果" data-title="真实系统演示 · 技能审批台" aria-labelledby="s13">
+        <div class="slide-inner">
+          <div class="slide-heading"><div><p class="kicker">03 / REAL PRODUCT <span class="cn">三、可验证成果 · 原文真实系统截图</span></p><h2 id="s13">不是概念界面。<span class="accent">是正在运行的产品。</span></h2></div><div class="screenshot-tabs" role="group" aria-label="截图导览"><button class="screenshot-tab" data-screen="0" aria-pressed="true" type="button">01 系统全貌</button><button class="screenshot-tab" data-screen="1" aria-pressed="false" type="button">02 候选列表</button><button class="screenshot-tab" data-screen="2" aria-pressed="false" type="button">03 技能预览</button></div></div>
+          <div class="screenshot-workspace">
+            <div class="screenshot-frame"><div class="screenshot-bar"><span>AGENTMON / 技能审批台</span><span>点击图片放大 ↗</span></div><button class="screenshot-open" id="screenshot-open" type="button" aria-label="放大查看真实系统截图"><img id="product-screenshot" src="assets/agentmon-screen-1.jpg" alt="原文真实截图：Agentmon 技能审批台，左侧为候选列表，右侧为 SKILL.md 内容预览"></button></div>
+            <div class="screenshot-guide"><div><span class="step-index" id="screen-step">01 / OVERVIEW</span><h3 id="screen-title">从候选到技能，看得见。</h3><p id="screen-description">真实系统把候选列表、审批状态与技能内容放在同一工作台。先看到将要沉淀的内容，再决定是否批准。</p></div><button class="tool" id="screenshot-enlarge" type="button">放大截图查看细节 ⛶</button><a class="tool" style="text-align:center" href="https://yeepay.feishu.cn/wiki/NwBpw8ewoiifd4kldqnc9hPVn9y" target="_blank" rel="noopener noreferrer">安装包 / 项目资料 ↗</a><p class="evidence-note">截图来自项目文档；局部图均裁自同一张原图。数字与状态是截图当时记录，不代表实时统计。</p></div>
+          </div>
+          <p class="screenshot-caption" id="screen-caption" aria-live="polite">原图全貌 · 展示候选技能、建议审批状态，以及包含适用场景、输入、步骤和验证的 SKILL.md 预览。</p>
+        </div>
+      </section>
+      <section class="slide visual-slide" data-chapter="核心创新点" data-title="创新 1—3 · 接入、审批与三轨沉淀" aria-labelledby="s14">
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">04 / INNOVATION <span class="cn">四、核心创新点 · 1—3</span></p><h2 id="s14">不打断工作，<br>也不<span class="accent">绕过你的决定。</span></h2></div>
+          <img class="diagram-image" src="assets/agentmon-approval.svg" alt="日常会话通过 Sidecar 旁路接入，提取 Memory、Rule、Skill 三轨待审候选，人在环批准后写回智能体上下文；未批准不注入">
+          <div class="diagram-takeaway"><span>01 旁路接入 · 02 人在环 · 03 三轨沉淀</span><small>随装随用、随停随走；默认待审，批准才写回。</small></div>
+        </div>
+      </section>
+      <section class="slide visual-slide" data-chapter="核心创新点" data-title="创新 4—6 · 审核、Sidecar 与自修订" aria-labelledby="s15">
+        <div class="slide-inner">
+          <div class="slide-heading"><p class="kicker">04 / INNOVATION <span class="cn">四、核心创新点 · 4—6</span></p><h2 id="s15">越用越准，<br>而且<span class="accent">准确得可解释。</span></h2></div>
+          <img class="diagram-image" src="assets/agentmon-revision.svg" alt="Sidecar 获取工作经验后，进行本地相似度召回与 LLM 二次确认，Multi-Agent 审核复用性、真实性、召回和风险；重复累计并提出修订，冲突标记保留">
+          <div class="diagram-takeaway"><span>04 Multi-Agent 审核 · 05 Sidecar · 06 两阶段去重与自修订</span><small>修订可解释，冲突不静默覆盖。</small></div>
+        </div>
+      </section>
+      <section class="slide closing" data-chapter="核心创新点" data-title="创新 7 · 不是蒸馏你，是超越你" aria-labelledby="s16">
+        <div class="slide-inner"><div class="split">
+          <div><p class="kicker">04 / BEYOND EVOLVING <span class="cn">四、核心创新点 · 7 · 概念创新</span></p><h2 class="big-statement" id="s16">不是蒸馏你。<br>是<span class="accent">超越你。</span></h2><p class="closing-formula">大模型 + 记忆 + 流程 = 进化的完全体</p><p class="lead">让每个人的真实经验，成为智能体持续成长的起点。<br>这就是 AgentMon。Beyond Evolving，超越进化。</p><div class="link-row"><a class="button" href="https://yeepay.feishu.cn/wiki/NwBpw8ewoiifd4kldqnc9hPVn9y" target="_blank" rel="noopener noreferrer">开启你的 AgentMon ↗</a><button class="button secondary" id="restart" type="button">回到封面 ↺</button></div></div>
+          <div><img class="closing-logo" src="assets/agentmon-mark.svg" alt="AgentMon LOGO"><p style="text-align:center;font:12px ui-monospace,monospace;letter-spacing:3px;color:var(--cyan);margin-top:15px">BEYOND EVOLVING.</p></div>
+        </div></div>
+      </section>
     </main>
-
-    <footer class="site-footer container"><a class="brand" href="#" aria-label="Back to top"><span data-content="site.name">lola</span><span class="brand-dot">.</span></a><p>© <span id="year">2026</span> <span data-content="site.copyright">Lola</span>. <span data-content="site.footer">Made with care, one idea at a time.</span></p><a class="back-to-top" href="#">Back to top ↑</a></footer>
-
-    <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title">
-      <div class="lightbox-toolbar"><span class="eyebrow">A CLOSER LOOK</span><button class="icon-button" id="lightbox-close" type="button" aria-label="Close picture">✕</button></div>
-      <img id="lightbox-image" alt="" width="800" height="1000">
-      <div class="lightbox-bottom"><div><h2 id="lightbox-title"></h2><p id="lightbox-caption"></p></div><div class="lightbox-navigation"><button class="icon-button" id="lightbox-prev" type="button" aria-label="Previous picture">←</button><button class="icon-button" id="lightbox-next" type="button" aria-label="Next picture">→</button></div></div>
-    </dialog>
-  </body>
+    <footer class="bottom" id="bottom" data-chapter="产品发布">
+      <nav class="chapter-nav" aria-label="演示章节"><button class="chapter" data-go="1" type="button"><span>01</span>开发背景</button><button class="chapter" data-go="5" type="button"><span>02</span>希望达到的价值</button><button class="chapter" data-go="13" type="button"><span>03</span>可验证成果</button><button class="chapter" data-go="14" type="button"><span>04</span>核心创新点</button></nav>
+      <div class="page-tools"><span class="hint">← → 翻页 · F 全屏 · O 目录</span><button class="arrow" id="prev" type="button" aria-label="上一页">←</button><span class="page-counter"><b id="page-number">01</b> / <span id="page-total">17</span></span><button class="arrow" id="next" type="button" aria-label="下一页">→</button></div>
+    </footer>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <div class="overlay" id="entry" role="dialog" aria-modal="true" aria-labelledby="entry-title">
+    <div class="entry-card"><img class="entry-logo" src="assets/agentmon-mark.svg" alt="AgentMon LOGO"><p class="kicker" style="justify-content:center;font-size:9px">AGENTMON / PRODUCT PRESENTATION</p><h2 id="entry-title">准备好，一起超越进化。</h2><p class="intro">按原文节奏展开的 17 页产品发布。<br>开发背景 → 价值主张 → 可验证成果 → 核心创新点</p><div class="entry-audio">入场音乐 · Butter-Fly<small id="entry-audio-status">主题曲已离线打包 · 点击开始即可播放</small></div><button class="button" id="enter" type="button">开始发布 · 开启音乐 ↗</button><button class="button secondary" id="enter-muted" type="button">静音开始</button><p class="footnote">点击后播放，可随时关闭 · 建议全屏演示<br>音乐来源为你提供的链接，正式发布前请确认使用权限。</p></div>
+  </div>
+  <div class="overlay" id="overview" role="dialog" aria-modal="true" aria-labelledby="overview-title" hidden>
+    <div class="overview-card"><div class="overview-header"><h2 id="overview-title">发布目录</h2><button class="tool" id="overview-close" type="button">关闭 · Esc</button></div><div class="overview-grid" id="overview-grid"></div><p class="footnote">与项目文档顺序一致 · 点击任意页面跳转</p></div>
+  </div>
+  <div class="overlay" id="image-viewer" role="dialog" aria-modal="true" aria-labelledby="image-viewer-title" hidden>
+    <div class="image-viewer-card"><div class="image-viewer-header"><h2 id="image-viewer-title">真实系统截图 · 放大查看</h2><div class="image-viewer-tools"><button class="tool" id="image-prev" type="button" aria-label="上一张截图">←</button><button class="tool" id="image-zoom" type="button" aria-pressed="false">放大细节 ×2</button><button class="tool" id="image-next" type="button" aria-label="下一张截图">→</button><button class="tool" id="image-close" type="button">关闭 · Esc</button></div></div><div class="image-viewer-stage" id="image-viewer-stage"><img id="image-viewer-image" src="assets/agentmon-screen-1.jpg" alt="Agentmon 技能审批台真实系统截图"></div></div>
+  </div>
+  <audio id="bgm" preload="none" loop>
+    <source src="assets/agentmon-butter-fly.mp3" type="audio/mpeg">
+    <source src="https://hitotsu.ucoz.net/download/1-Butter-Fly.mp3" type="audio/mpeg">
+  </audio>
+  <input class="audio-picker" id="audio-file" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac" aria-label="选择本地背景音乐">
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
+  <noscript><style>html,body{overflow:auto;height:auto}.app{display:block;height:auto}.stage{position:static}.slide{position:relative;opacity:1;visibility:visible;transform:none;pointer-events:auto}.overlay,.bottom,.tools,.progress{display:none}.slide-inner{padding:45px 0}</style><p>未启用 JavaScript，当前为连续阅读模式；翻页和背景音乐需要 JavaScript。</p></noscript>
+  <script src="assets/agentmon-audio.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const $ = id => document.getElementById(id);
+      const slides = [...document.querySelectorAll('.slide')];
+      const app = $('app');
+      const stage = $('stage');
+      const entry = $('entry');
+      const overview = $('overview');
+      const imageViewer = $('image-viewer');
+      const audio = $('bgm');
+      const picker = $('audio-file');
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      let current = 0;
+      let entered = false;
+      let toastTimer;
+      let localAudioUrl = '';
+      let overviewReturnFocus;
+      let imageReturnFocus;
+      let currentScreen = 0;
+      const screens = [
+        { src: 'assets/agentmon-screen-1.jpg', step: '01 / OVERVIEW', title: '从候选到技能，看得见。', description: '真实系统把候选列表、审批状态与技能内容放在同一工作台。先看到将要沉淀的内容，再决定是否批准。', caption: '原图全貌 · 展示候选技能、建议审批状态，以及包含适用场景、输入、步骤和验证的 SKILL.md 预览。', alt: '原文真实截图：Agentmon 技能审批台，左侧候选列表，右侧 SKILL.md 预览', width: 1280 },
+        { src: 'assets/agentmon-screen-candidates.jpg', step: '02 / CANDIDATES', title: '先看候选，再做决定。', description: '候选列表展示技能标题、来源、复用与探针信息，以及“建议快批”“待审批”“影子”等状态。审批内容不再是一个黑盒。', caption: '同一原图的候选列表局部 · 用于讲解候选内容和审批状态，不是独立截图或实时系统。', alt: '真实系统截图局部：候选技能列表及建议快批、待审批和影子状态', width: 354 },
+        { src: 'assets/agentmon-screen-skill.jpg', step: '03 / SKILL PREVIEW', title: '不是一段摘要，是一套方法。', description: 'SKILL.md 预览包含适用场景、输入、操作步骤和验证要点。工作经验被组织成可检查、可复用的流程。', caption: '同一原图的技能预览局部 · 展示生成 Cursor 项目规则的适用场景、输入、步骤与验证。', alt: '真实系统截图局部：SKILL.md 的适用场景、输入、六个操作步骤和验证内容', width: 892 }
+      ];
+      function selectScreen(index) {
+        currentScreen = (index + screens.length) % screens.length;
+        const screen = screens[currentScreen];
+        $('product-screenshot').src = screen.src;
+        $('product-screenshot').alt = screen.alt;
+        $('screen-step').textContent = screen.step;
+        $('screen-title').textContent = screen.title;
+        $('screen-description').textContent = screen.description;
+        $('screen-caption').textContent = screen.caption;
+        $('image-viewer-image').src = screen.src;
+        $('image-viewer-image').alt = screen.alt;
+        $('image-viewer-image').style.setProperty('--image-zoom-width', Math.max(screen.width, 900) + 'px');
+        $('image-viewer-title').textContent = screen.title + ' · ' + (currentScreen ? '真实截图局部' : '真实系统全貌');
+        $('image-viewer-stage').classList.remove('zoomed');
+        $('image-zoom').setAttribute('aria-pressed', 'false');
+        $('image-zoom').textContent = '放大细节 ×2';
+        document.querySelectorAll('[data-screen]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.screen) === currentScreen)));
+      }
+      function openImage() {
+        imageReturnFocus = document.activeElement;
+        selectScreen(currentScreen);
+        imageViewer.hidden = false;
+        app.inert = true;
+        $('image-close').focus();
+      }
+      function closeImage() {
+        imageViewer.hidden = true;
+        app.inert = false;
+        if (imageReturnFocus instanceof HTMLElement) imageReturnFocus.focus({ preventScroll: true });
+      }
+      document.querySelectorAll('[data-screen]').forEach(button => button.addEventListener('click', () => selectScreen(Number(button.dataset.screen))));
+      $('screenshot-open').addEventListener('click', openImage);
+      $('screenshot-enlarge').addEventListener('click', openImage);
+      $('image-close').addEventListener('click', closeImage);
+      $('image-prev').addEventListener('click', () => selectScreen(currentScreen - 1));
+      $('image-next').addEventListener('click', () => selectScreen(currentScreen + 1));
+      imageViewer.addEventListener('click', event => { if (event.target === imageViewer) closeImage(); });
+      $('image-zoom').addEventListener('click', () => {
+        const zoomed = $('image-viewer-stage').classList.toggle('zoomed');
+        $('image-zoom').setAttribute('aria-pressed', String(zoomed));
+        $('image-zoom').textContent = zoomed ? '适应窗口' : '放大细节 ×2';
+      });
+      function notify(message) {
+        clearTimeout(toastTimer);
+        $('toast').textContent = message;
+        $('toast').hidden = false;
+        toastTimer = setTimeout(() => { $('toast').hidden = true; }, 6500);
+      }
+      slides.forEach((slide, index) => {
+        slide.setAttribute('role', 'group');
+        slide.setAttribute('aria-roledescription', '幻灯片');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'overview-item';
+        const number = document.createElement('small');
+        number.textContent = String(index + 1).padStart(2, '0') + ' / ' + slide.dataset.chapter;
+        const title = document.createElement('strong');
+        title.textContent = slide.dataset.title;
+        button.append(number, title);
+        button.addEventListener('click', () => { closeOverview(); goTo(index); });
+        $('overview-grid').append(button);
+      });
+      function indexFromHash() {
+        const match = /^#slide-(\d+)$/.exec(location.hash);
+        if (!match) return 0;
+        const value = Number(match[1]) - 1;
+        return Math.max(0, Math.min(slides.length - 1, value));
+      }
+      function goTo(index, updateHash = true) {
+        const target = Math.max(0, Math.min(slides.length - 1, index));
+        if (target !== current && slides[current].contains(document.activeElement)) {
+          document.activeElement.blur();
+        }
+        current = target;
+        slides.forEach((slide, i) => {
+          const active = i === current;
+          slide.classList.toggle('active', active);
+          slide.inert = !active;
+          slide.setAttribute('aria-hidden', String(!active));
+          if (active) slide.scrollTop = 0;
+        });
+        $('page-number').textContent = String(current + 1).padStart(2, '0');
+        $('page-total').textContent = String(slides.length).padStart(2, '0');
+        $('prev').disabled = current === 0;
+        $('next').disabled = current === slides.length - 1;
+        $('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+        $('bottom').dataset.chapter = slides[current].dataset.chapter;
+        document.querySelectorAll('.chapter').forEach(button => {
+          const active = slides[Number(button.dataset.go)].dataset.chapter === slides[current].dataset.chapter;
+          button.setAttribute('aria-current', String(active));
+        });
+        document.querySelectorAll('.overview-item').forEach((button, i) => button.setAttribute('aria-current', String(i === current)));
+        $('announcement').textContent = `第 ${current + 1} 页，共 ${slides.length} 页。${slides[current].dataset.title}`;
+        if (updateHash && location.hash !== '#slide-' + (current + 1)) location.hash = 'slide-' + (current + 1);
+      }
+      $('prev').addEventListener('click', () => goTo(current - 1));
+      $('next').addEventListener('click', () => goTo(current + 1));
+      $('home').addEventListener('click', () => goTo(0));
+      $('restart').addEventListener('click', () => { goTo(0); $('home').focus(); });
+      document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => goTo(Number(button.dataset.go))));
+      addEventListener('hashchange', () => { if (indexFromHash() !== current) goTo(indexFromHash(), false); });
+      function openOverview() {
+        if (!entered || !overview.hidden) return;
+        overviewReturnFocus = document.activeElement;
+        overview.hidden = false;
+        app.inert = true;
+        $('overview-close').focus();
+      }
+      function closeOverview() {
+        overview.hidden = true;
+        app.inert = false;
+        if (overviewReturnFocus instanceof HTMLElement) overviewReturnFocus.focus({ preventScroll: true });
+      }
+      $('overview-toggle').addEventListener('click', openOverview);
+      $('overview-close').addEventListener('click', closeOverview);
+      overview.addEventListener('click', event => { if (event.target === overview) closeOverview(); });
+      function trapFocus(event, container) {
+        if (event.key !== 'Tab') return;
+        const buttons = [...container.querySelectorAll('button:not(:disabled),a[href]')];
+        const first = buttons[0];
+        const last = buttons[buttons.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first.focus();
+        }
+      }
+      async function toggleFullscreen() {
+        if (!document.fullscreenEnabled) {
+          notify('当前浏览器不支持网页全屏，请使用浏览器菜单中的全屏功能。');
+          return;
+        }
+        try {
+          if (document.fullscreenElement) await document.exitFullscreen();
+          else await document.documentElement.requestFullscreen();
+        } catch (error) {
+          notify('全屏请求被浏览器阻止，请使用浏览器菜单进入全屏。');
+          console.error('Fullscreen request failed:', error);
+        }
+      }
+      $('fullscreen').addEventListener('click', () => { void toggleFullscreen(); });
+      document.addEventListener('fullscreenchange', () => {
+        const full = Boolean(document.fullscreenElement);
+        $('fullscreen').textContent = full ? '退出全屏 ⛶' : '全屏 ⛶';
+        $('fullscreen').setAttribute('aria-label', full ? '退出全屏' : '进入全屏');
+      });
+      document.addEventListener('keydown', event => {
+        if (!entered) {
+          if (event.key === 'Escape') enter(false);
+          trapFocus(event, entry);
+          return;
+        }
+        if (!imageViewer.hidden) {
+          if (event.key === 'Escape') closeImage();
+          else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            event.preventDefault();
+            selectScreen(currentScreen + (event.key === 'ArrowRight' ? 1 : -1));
+          }
+          trapFocus(event, imageViewer);
+          return;
+        }
+        if (!overview.hidden) {
+          if (event.key === 'Escape') closeOverview();
+          trapFocus(event, overview);
+          return;
+        }
+        if (event.ctrlKey || event.metaKey || event.altKey || event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
+        const interactive = event.target.closest('button,a');
+        if (event.key === ' ' && interactive) return;
+        if (['ArrowRight', 'PageDown', ' '].includes(event.key)) {
+          event.preventDefault(); goTo(current + 1);
+        } else if (['ArrowLeft', 'PageUp'].includes(event.key)) {
+          event.preventDefault(); goTo(current - 1);
+        } else if (event.key === 'Home') {
+          event.preventDefault(); goTo(0);
+        } else if (event.key === 'End') {
+          event.preventDefault(); goTo(slides.length - 1);
+        } else if (event.key.toLowerCase() === 'f') {
+          event.preventDefault(); void toggleFullscreen();
+        } else if (event.key.toLowerCase() === 'o') {
+          event.preventDefault(); openOverview();
+        }
+      });
+      let touchStart;
+      stage.addEventListener('touchstart', event => {
+        if (event.touches.length !== 1 || event.target.closest('button,a,[data-no-swipe]')) { touchStart = null; return; }
+        touchStart = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+      }, { passive: true });
+      stage.addEventListener('touchend', event => {
+        if (!touchStart || !entered || !overview.hidden || event.changedTouches.length !== 1) return;
+        const dx = event.changedTouches[0].clientX - touchStart.x;
+        const dy = event.changedTouches[0].clientY - touchStart.y;
+        touchStart = null;
+        if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.5) goTo(current + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+      stage.addEventListener('touchcancel', () => { touchStart = null; }, { passive: true });
+      audio.volume = 0.35;
+      function updateMusic() {
+        const requested = !audio.paused && !audio.error;
+        const playing = requested && audio.readyState >= 3;
+        $('music').setAttribute('aria-pressed', String(requested));
+        $('music').setAttribute('aria-label', requested ? '关闭背景音乐' : '播放背景音乐');
+        $('music-label').textContent = playing ? '音乐开启' : requested ? '音乐加载中' : '音乐关闭';
+      }
+      async function playMusic() {
+        try {
+          await audio.play();
+          updateMusic();
+        } catch (error) {
+          updateMusic();
+          if (error.name === 'NotAllowedError') notify('浏览器限制了自动播放，请点击右上角音乐按钮开启。');
+          else if (error.name !== 'AbortError') {
+            notify('音乐播放失败，请保留 HTML 旁的 assets 文件夹，或点击“换音源”重新加载。');
+            console.error('Audio playback failed:', error);
+          }
+        }
+      }
+      $('music').addEventListener('click', () => { if (audio.paused) void playMusic(); else audio.pause(); });
+      ['play', 'playing', 'canplay', 'waiting', 'pause', 'ended'].forEach(event => audio.addEventListener(event, updateMusic));
+      audio.addEventListener('error', () => {
+        updateMusic();
+        $('entry-audio-status').textContent = '音源加载失败，请检查 assets 文件夹，或进入后更换音源';
+        notify('本地主题曲加载失败。请勿只移动 HTML 文件，或点击右上角“换音源”。');
+        console.error('Audio media error:', audio.error);
+      });
+      $('replace-audio').addEventListener('click', () => picker.click());
+      picker.addEventListener('change', () => {
+        const file = picker.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('audio/') && !/\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(file.name)) {
+          notify('请选择 MP3、M4A、WAV 等有效音频文件。');
+          picker.value = '';
+          return;
+        }
+        audio.pause();
+        if (localAudioUrl) URL.revokeObjectURL(localAudioUrl);
+        localAudioUrl = URL.createObjectURL(file);
+        audio.src = localAudioUrl;
+        picker.value = '';
+        void playMusic();
+      });
+      function enter(withMusic) {
+        if (entered) return;
+        entered = true;
+        entry.hidden = true;
+        app.inert = false;
+        stage.focus({ preventScroll: true });
+        if (withMusic) void playMusic();
+      }
+      app.inert = true;
+      $('enter').addEventListener('click', () => enter(true));
+      $('enter-muted').addEventListener('click', () => enter(false));
+      goTo(indexFromHash(), false);
+      $('enter').focus({ preventScroll: true });
+      const canvas = $('space');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      let width = 0, height = 0, frame = 0, animationId = 0;
+      let points = [];
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        points.forEach((point, index) => {
+          ctx.fillStyle = `rgba(152,239,216,${0.17 + Math.sin(frame / 110 + index) * 0.1})`;
+          ctx.beginPath(); ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2); ctx.fill();
+          for (let j = index + 1; j < points.length; j++) {
+            const other = points[j];
+            const distance = Math.hypot(point.x - other.x, point.y - other.y);
+            if (distance < 145) {
+              ctx.strokeStyle = `rgba(105,214,238,${(1 - distance / 145) * 0.07})`;
+              ctx.beginPath(); ctx.moveTo(point.x, point.y); ctx.lineTo(other.x, other.y); ctx.stroke();
+            }
+          }
+        });
+      }
+      function resize() {
+        width = innerWidth; height = innerHeight;
+        const ratio = Math.min(devicePixelRatio || 1, 2);
+        canvas.width = width * ratio; canvas.height = height * ratio;
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        points = Array.from({ length: Math.min(60, Math.floor(width / 24)) }, () => ({
+          x: Math.random() * width, y: Math.random() * height, r: Math.random() + .4, speed: Math.random() * .1 + .025
+        }));
+        draw();
+      }
+      function tick() {
+        frame++;
+        points.forEach(point => { point.y -= point.speed; if (point.y < -5) point.y = height + 5; });
+        draw();
+        animationId = requestAnimationFrame(tick);
+      }
+      function syncAnimation() {
+        cancelAnimationFrame(animationId);
+        if (!document.hidden && !reducedMotion.matches) tick();
+        else draw();
+      }
+      addEventListener('resize', resize, { passive: true });
+      document.addEventListener('visibilitychange', syncAnimation);
+      reducedMotion.addEventListener('change', syncAnimation);
+      addEventListener('pagehide', event => { if (!event.persisted && localAudioUrl) URL.revokeObjectURL(localAudioUrl); });
+      resize();
+      syncAnimation();
+    })();
+  </script>
+</body>
 </html>

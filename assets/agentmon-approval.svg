@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 330">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="m1 1 7 4-7 4" fill="none" stroke="#98efd8" stroke-width="1.5"/></marker></defs>
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{font-size:21px;fill:#e1eff0}.sub{font-size:14px;fill:#91aab8}.line{fill:none;stroke:#98efd8;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}</style>
+  <path d="M180 137h88M528 137h96M830 137h94" class="line" marker-end="url(#a)"/>
+  <g transform="translate(15 70)"><rect width="165" height="120" rx="8" fill="#10212c" stroke="#69d6ee66"/><path d="M24 28h117M24 48h82M24 68h103" stroke="#69d6ee" stroke-width="2"/><text x="82" y="100" class="title" text-anchor="middle">日常会话</text><text x="82" y="158" class="sub" text-anchor="middle">Sidecar 旁路伴随</text></g>
+  <g transform="translate(284 27)"><rect width="244" height="218" rx="9" fill="#10212b" stroke="#98efd866"/><text x="122" y="39" text-anchor="middle" class="title">三轨候选</text><g fill="#142d34" stroke="#98efd833"><rect x="24" y="59" width="196" height="37" rx="4"/><rect x="24" y="109" width="196" height="37" rx="4"/><rect x="24" y="159" width="196" height="37" rx="4"/></g><g fill="#98efd8" font-size="17" text-anchor="middle"><text x="122" y="84">Memory</text><text x="122" y="134">Rule</text><text x="122" y="184">Skill</text></g><text x="122" y="255" class="sub" text-anchor="middle">提取后默认待审</text></g>
+  <g transform="translate(640 45)"><path d="m86 0 86 31v65c0 49-86 91-86 91S0 145 0 96V31Z" fill="#132d29" stroke="#98efd8" stroke-width="1.5"/><circle cx="86" cy="60" r="17" class="line"/><path d="M54 111v-9a32 32 0 0 1 64 0v9m-45 19 14 14 28-30" class="line"/><text x="86" y="234" class="title" text-anchor="middle">人在环审批</text></g>
+  <g transform="translate(940 74)"><rect width="263" height="117" rx="8" fill="#12302a" stroke="#98efd877"/><path d="m27 48 17 16 32-35" class="line"/><text x="159" y="52" text-anchor="middle" class="title">写回智能体上下文</text><text x="159" y="84" text-anchor="middle" class="sub">成为下次可调用的能力</text></g>
+  <path d="M726 238v56H407v-34" fill="none" stroke="#f5ae7e88" stroke-dasharray="4 6"/>
+  <text x="572" y="320" fill="#f5ae7e" text-anchor="middle" font-size="14">未批准 → 保留待审，不静默注入</text>
+</svg>

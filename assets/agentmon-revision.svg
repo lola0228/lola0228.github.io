@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 330">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="m1 1 7 4-7 4" fill="none" stroke="#98efd8" stroke-width="1.5"/></marker></defs>
+  <style>text{font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.title{font-size:21px;fill:#e3eff1}.sub{font-size:14px;fill:#91aab8}.line{fill:none;stroke:#98efd8;stroke-width:1.5}</style>
+  <g transform="translate(20 69)"><path d="M0 0h150l29 29v103H0Zm150 0v29h29" fill="#10242f" stroke="#69d6ee88"/><path d="M26 45h101M26 68h127M26 92h80" stroke="#69d6ee" stroke-width="2"/><text x="90" y="181" class="title" text-anchor="middle">新的工作经验</text></g>
+  <path d="M218 135h70M533 135h70M848 135h70" class="line" marker-end="url(#a)"/>
+  <g transform="translate(307 60)"><circle cx="100" cy="75" r="74" fill="#10262e" stroke="#98efd866"/><circle cx="93" cy="65" r="27" class="line"/><path d="m113 85 28 28" class="line" stroke-width="4"/><text x="100" y="192" class="title" text-anchor="middle">本地相似度召回</text><text x="100" y="223" class="sub" text-anchor="middle">先找到已有的相近能力</text></g>
+  <g transform="translate(622 60)"><path d="m100 0 84 44v88l-84 44-84-44V44Z" fill="#132b28" stroke="#98efd888"/><text x="100" y="78" fill="#98efd8" text-anchor="middle" font-size="26">LLM</text><text x="100" y="110" class="sub" text-anchor="middle">二次确认</text><text x="100" y="220" class="sub" text-anchor="middle">复用性 / 真实性 / 召回 / 风险</text></g>
+  <g transform="translate(942 32)">
+    <rect width="235" height="75" rx="7" fill="#12302a" stroke="#98efd877"/><text x="117" y="31" text-anchor="middle" class="title">重复：累计命中</text><text x="117" y="57" text-anchor="middle" class="sub">达标后提出修订，审批生效</text>
+    <rect y="105" width="235" height="75" rx="7" fill="#29251e" stroke="#f5ae7e77"/><text x="117" y="136" text-anchor="middle" class="title">冲突：标记保留</text><text x="117" y="162" text-anchor="middle" class="sub">不静默覆盖，保留判断依据</text>
+  </g>
+  <path d="M1060 230v64H110v-47" fill="none" stroke="#98efd84d" stroke-dasharray="5 7"/>
+  <text x="600" y="322" text-anchor="middle" class="sub">越用越准，也让每一次修订有迹可循。</text>
+</svg>
